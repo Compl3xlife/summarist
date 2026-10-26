@@ -1,0 +1,105 @@
+html,
+body,
+#root {
+  background: #fff;
+  color: #032b41;
+}
+
+.app-main {
+  padding: 32px 40px 72px;
+}
+
+.player-main {
+  min-height: calc(100vh - 80px);
+}
+
+.for-you__books {
+  position: relative;
+}
+
+.selected__book--content {
+  align-items: center;
+}
+
+.selected__book--text {
+  width: auto;
+  flex: 1;
+  min-width: 0;
+}
+
+.selected__book--icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+}
+
+.audio__progress--bar {
+  background: linear-gradient(to right, #2bd97c var(--range-progress, 0%), #6d787d var(--range-progress, 0%));
+}
+
+.audio__controls--btn-play svg {
+  color: #042330;
+  fill: #042330;
+  stroke: none;
+}
+
+.auth__field {
+  position: relative;
+}
+
+.auth__field .auth__main--input {
+  width: 100%;
+}
+
+.auth__eye {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  color: #394547;
+}
+
+.inner-book--img-wrapper {
+  width: 280px;
+  flex: none;
+}
+
+.inner-book__img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.plan__header--wrapper {
+  background: #032b41;
+  border-bottom-right-radius: 16rem;
+  border-bottom-left-radius: 16rem;
+}
+
+.plan__header--wrapper::before {
+  display: none;
+}
+
+.plan__card {
+  align-items: center;
+}
+
+.plan__card--cta .btn {
+  max-width: 340px;
+}
+
+.sidebar__font--size-icon {
+  color: #032b41;
+  font-weight: 500;
+}
+
+.search__books--wrapper {
+  z-index: 30;
+}
+
+.empty-search {
+  padding: 16px;
+  color: #394547;
+}
