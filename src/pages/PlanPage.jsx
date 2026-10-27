@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { AiOutlineClockCircle, AiOutlineDown, AiOutlineStar } from "react-icons/ai"
 import { HiOutlineUserGroup } from "react-icons/hi"
@@ -27,6 +27,62 @@ const faqs = [
     text: "You will not be charged if you cancel your trial before its conclusion. While you will not have complete access to the entire Summarist library, you can still expand your knowledge with one curated book per day.",
   },
 ]
+
+function Accordion({ id, title, text, open, onToggle }) {
+  const panel = useRef(null)
+  const ready = useRef(false)
+  const [height, setHeight] = useState(open ? "auto" : "0px")
+
+  useEffect(() => {
+    const el = panel.current
+    if (!el) return
+    if (!ready.current) {
+      ready.current = true
+      setHeight(open ? "auto" : "0px")
+      return
+    }
+    let frame = 0
+    let timer = 0
+    if (open) {
+      setHeight(`${el.scrollHeight}px`)
+      timer = window.setTimeout(() => setHeight("auto"), 350)
+    } else {
+      setHeight(`${el.scrollHeight}px`)
+      frame = window.requestAnimationFrame(() => {
+        frame = window.requestAnimationFrame(() => setHeight("0px"))
+      })
+    }
+    return () => {
+      window.clearTimeout(timer)
+      window.cancelAnimationFrame(frame)
+    }
+  }, [open])
+
+  useEffect(() => {
+    const card = panel.current?.parentElement
+    if (!card) return
+    let width = card.clientWidth
+    const observer = new ResizeObserver(() => {
+      const next = card.clientWidth
+      if (open && width && next !== width) setHeight("auto")
+      width = next
+    })
+    observer.observe(card)
+    return () => observer.disconnect()
+  }, [open])
+
+  return (
+    <div className="accordion__card">
+      <div className="accordion__header" onClick={() => onToggle(id)}>
+        <div className="accordion__title">{title}</div>
+        <AiOutlineDown className={`accordion__icon${open ? " accordion__icon--rotate" : ""}`} />
+      </div>
+      <div ref={panel} className={`collapse${open ? " show" : ""}`} style={{ height }}>
+        <div className="accordion__body">{text}</div>
+      </div>
+    </div>
+  )
+}
 
 export default function PlanPage() {
   const [plan, setPlan] = useState("premium-plus")
@@ -120,19 +176,10 @@ export default function PlanPage() {
                 : "30-day money back guarantee, no questions asked."}
             </div>
           </div>
-          <div>
-            {faqs.map((item) => {
-              const shown = open === item.id
-              return (
-                <div className="accordion__card" key={item.id}>
-                  <div className="accordion__header" onClick={() => setOpen(shown ? 0 : item.id)}>
-                    <div className="accordion__title">{item.title}</div>
-                    <AiOutlineDown className={`accordion__icon${shown ? " accordion__icon--rotate" : ""}`} />
-                  </div>
-                  {shown ? <div className="accordion__body">{item.text}</div> : null}
-                </div>
-              )
-            })}
+          <div className="faq__wrapper">
+            {faqs.map((item) => (
+              <Accordion key={item.id} id={item.id} title={item.title} text={item.text} open={open === item.id} onToggle={(id) => setOpen(open === id ? 0 : id)} />
+            ))}
           </div>
         </div>
       </section>
