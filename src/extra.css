@@ -15,6 +15,7 @@ body,
 
 .for-you__books {
   position: relative;
+  width: auto;
 }
 
 .selected__book--content {
